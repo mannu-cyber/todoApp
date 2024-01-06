@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <style>
+    body {
+      background-image: url(https://images.unsplash.com/photo-1641154706848-fe27fd366032?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fHRvZG98ZW58MHx8MHx8fDA%3D);
+      width: 100vw;
+      height: 100%;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      background-color: #062df26f;
+      font-family: monospace;
+      overflow: hidden;
+    }
+
+    .main-card {
+      margin: 7vw auto;
+      width: 450px;
+      min-height: 400px;
+      max-height: 550px;
+      background: rgba(237, 210, 210, 0.3);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 10px;
+      color: black;
+      padding-bottom: 2vw;
+    }
+
+    .main-card > h1 {
+      padding: 10px;
+      text-align: center;
+    }
+    .input {
+      width: 100%;
+      display: flex;
+      justify-content: space-evenly;
+    }
+
+    input {
+      padding: 0.7vw 1vw;
+      font-size: 1.2;
+      text-transform: capitalize;
+      border: 1px solid #00000073;
+      border-radius: 15px;
+      width: 50%;
+    }
+
+    button {
+      padding: 0.7vw 2vw;
+      border: none;
+      border-radius: 15px;
+      font-size: 1.2vw;
+      cursor: pointer;
+      font-family: monospace;
+      background-color: #b3565673;
+      font-weight: 888;
+      color: rgba(0, 0, 0, 0.742);
+    }
+    .task-container {
+      display: flex;
+      height: 400px;
+      flex-direction: column;
+      padding: 0;
+      margin: 0;
+      padding: 0.6vw 2vw;
+      overflow-y: scroll;
+    }
+
+    .task-container p {
+      font-size: 1.3vw;
+      font-weight: 888;
+      border: 1px solid rgba(0, 0, 0, 0.699);
+      padding: 0.7vw 2vw;
+      border-radius: 10px;
+      color: rgba(0, 0, 0, 0.854);
+      display: flex;
+      justify-content: space-between;
+      text-transform: capitalize;
+    }
+
+    .task-container p span {
+      cursor: pointer;
+    }
+  </style>
+  <body>
+    <div class="main-card">
+      <h1>ToDo App</h1>
+
+      <div class="input">
+        <input id="inputElem" type="text" placeholder="Enter Your task" />
+        <button type="button" onclick="addtask()">Add</button>
+      </div>
+      <div class="task-container" id="listcont"></div>
+    </div>
+
+    <script>
+      let todoList = [];
+      let listCont = document.getElementById("listcont");
+      let itemsfromLs = localStorage.getItem("todoList");
+      if (itemsfromLs) {
+        todoList = JSON.parse(itemsfromLs);
+        loadList();
+      }
+
+      function addtask() {
+        let inputbox = document.getElementById("inputElem");
+        let task = inputbox.value;
+
+        if (task) {
+          todoList.push(task);
+          localStorage.setItem("todoList", JSON.stringify(todoList));
+          inputbox.value = "";
+          loadList();
+        } else {
+          alert("Please Enter a task");
+        }
+      }
+
+      function loadList() {
+        listCont.innerHTML = "";
+
+        for (let i = 0; i < todoList.length; i++) {
+          const task = todoList[i];
+          listCont.innerHTML += `<p> ${task} <span onclick = "removeTask (${i})" > ❌ </span> </p>`;
+        }
+      }
+
+      function removeTask(index) {
+        todoList.splice(index, 1);
+        localStorage.setItem("todoList", JSON.stringify(todoList));
+        loadList();
+      }
+    </script>
+  </body>
+</html>
